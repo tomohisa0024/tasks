@@ -18,12 +18,20 @@ class YouTube
         return $googleClient;
     }
 
-    public function fetchVideos(string $part, array $options = [])
+    /**
+     * https://developers.google.com/youtube/v3/docs/search/list?hl=ja
+     */
+    public function fetchVideos(string $part, int $limit, array $options = [])
     {
         try {
             $count = 0;
-            while($count < 2){
+            $resultsPageCount = 0;
+            while($count < 10){
                 $searchLists[$count] = $this->goolgeServiceYoutube->search->listSearch($part, $options);
+                $resultsPageCount += $searchLists[$count]['pageInfo']['resultsPerPage'];
+                if ($limit <= $resultsPageCount) {
+                    break;
+                }
                 $options['pageToken'] = $searchLists[$count]["nextPageToken"];
                 $count++;
             }

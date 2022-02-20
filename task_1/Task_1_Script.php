@@ -7,6 +7,9 @@ $youtube = new YouTube();
 // レスポンスの形式を指定
 $part = 'snippet';
 
+// 取得件数を指定
+$limit = 100;
+
 // 動画の検索条件を設定
 $conditions = [
     'type' => 'video', //検索対象は動画
@@ -16,7 +19,7 @@ $conditions = [
     'pageToken' => null
 ];
 
-$videos = $youtube->fetchVideos($part, $conditions);
+$videos = $youtube->fetchVideos($part, $limit, $conditions);
 
 $i = 1;
 foreach ($videos as $video) {
