@@ -24,7 +24,7 @@ class YouTube
             $count = 0;
             while($count < 2){
                 $searchLists[$count] = $this->goolgeServiceYoutube->search->listSearch($part, $options);
-                $options['pageToken'] = $searchResponse[$count]["nextPageToken"];
+                $options['pageToken'] = $searchLists[$count]["nextPageToken"];
                 $count++;
             }
         } catch (Google_Service_Exception $e) {
