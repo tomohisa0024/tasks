@@ -37,10 +37,10 @@ class YouTube
                 $count++;
             }
         } catch (Google_Service_Exception $e) {
-            echo htmlspecialchars($e->getMessage());
+            echo $e->getMessage();
             exit;
         } catch (Google_Exception $e) {
-            echo htmlspecialchars($e->getMessage());
+            echo $e->getMessage();
             exit;
         }
 
