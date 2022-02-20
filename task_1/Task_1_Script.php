@@ -13,22 +13,12 @@ $limit = 100;
 // 動画の検索条件を設定
 $conditions = [
     'type' => 'video', //検索対象は動画
-    'maxResults' => 50, // 最大50件
+    'maxResults' => 50, // 1度の取得で最大50件
     'order' => 'date', // 作成日の新しい順
-    'q' => 'SHOWROOM',
+    'q' => 'SHOWROOM', //検索クエリ
     'pageToken' => null
 ];
 
 $videos = $youtube->fetchVideos($part, $limit, $conditions);
 
-$i = 1;
-foreach ($videos as $video) {
-    $text = <<<TEXT
-    $i
-    タイトル : {$video['snippet']['title']}
-    URL : https://www.youtube.com/watch?v={$video['id']['videoId']}
-    作成日時 : {$video['snippet']['publishedAt']}
-    TEXT;
-    echo $text . PHP_EOL . PHP_EOL;
-    $i++;
-}
+$youtube->outputVideos($videos);

@@ -19,20 +19,21 @@ class YouTube
     }
 
     /**
+     * MEMO：conditionsに設定できる条件は下記URL参照
      * https://developers.google.com/youtube/v3/docs/search/list?hl=ja
      */
-    public function fetchVideos(string $part, int $limit, array $options = [])
+    public function fetchVideos(string $part, int $limit, array $conditions = []) : array 
     {
         try {
             $count = 0;
             $resultsPageCount = 0;
             while($count < 10){
-                $searchLists[$count] = $this->goolgeServiceYoutube->search->listSearch($part, $options);
+                $searchLists[$count] = $this->goolgeServiceYoutube->search->listSearch($part, $conditions);
                 $resultsPageCount += $searchLists[$count]['pageInfo']['resultsPerPage'];
                 if ($limit <= $resultsPageCount) {
                     break;
                 }
-                $options['pageToken'] = $searchLists[$count]["nextPageToken"];
+                $conditions['pageToken'] = $searchLists[$count]["nextPageToken"];
                 $count++;
             }
         } catch (Google_Service_Exception $e) {
@@ -47,6 +48,22 @@ class YouTube
             foreach($searchList['items'] as $item)
             $videos[] = $item;
         }
+
         return $videos;
+    }
+
+    public function outputVideos(array $videos) :void
+    {
+        $videoCount = 1;
+        foreach ($videos as $video) {
+            $text = <<<TEXT
+            {$videoCount}件目
+            タイトル : {$video['snippet']['title']}
+            URL : https://www.youtube.com/watch?v={$video['id']['videoId']}
+            作成日時 : {$video['snippet']['publishedAt']}
+            TEXT;
+            echo $text . PHP_EOL . PHP_EOL;
+            $videoCount++;
+        }
     }
 }
