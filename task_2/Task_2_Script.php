@@ -16,10 +16,12 @@ $threeDaysAgoFromToday = date(DATE_RFC3339 , strtotime( "-3 day" , $today));
 // 動画の検索条件を設定
 $conditions = [
     'type' => 'video', //検索対象は動画
-    'maxResults' => 10, // 1度の取得で最大50件
+    'maxResults' => 10, // 1度の取得で最大10件
     'order' => 'rating', // 評価の高い順
     'q' => 'Apex Legends', //検索クエリ
     'publishedAfter' => $threeDaysAgoFromToday, // 3日以内の動画を対象
+    'regionCode' => 'JP', //日本での検索結果を対象
+    'relevanceLanguage' => 'ja', //日本語に関連のある動画を検索対象
     'pageToken' => null
 ];
 
